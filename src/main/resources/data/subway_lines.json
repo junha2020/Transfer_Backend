@@ -1,0 +1,185 @@
+[
+  {
+    "lineId": "ginza_line",
+    "lineName": "도쿄메트로 긴자선",
+    "type": "SUBWAY",
+    "isPassCovered": true,
+    "stations": [
+      { "id": "shibuya", "nameKor": "시부야", "nameJpn": "渋谷", "isBoundary": false },
+      { "id": "omotesando", "nameKor": "오모테산도", "nameJpn": "表参道", "isBoundary": false },
+      { "id": "akasaka_mitsuke", "nameKor": "아카사카미츠케", "nameJpn": "赤坂見附", "isBoundary": false },
+      { "id": "ginza", "nameKor": "긴자", "nameJpn": "銀座", "isBoundary": false },
+      { "id": "shinbashi", "nameKor": "신바시", "nameJpn": "新橋", "isBoundary": false },
+      { "id": "nihonbashi", "nameKor": "니혼바시", "nameJpn": "日本橋", "isBoundary": false },
+      { "id": "ueno", "nameKor": "우에노", "nameJpn": "上野", "isBoundary": false },
+      { "id": "asakusa", "nameKor": "아사쿠사", "nameJpn": "浅草", "isBoundary": false }
+    ]
+  },
+  {
+    "lineId": "marunouchi_line",
+    "lineName": "도쿄메트로 마루노우치선",
+    "type": "SUBWAY",
+    "isPassCovered": true,
+    "stations": [
+      { "id": "ogikubo", "nameKor": "오기쿠보", "nameJpn": "荻窪", "isBoundary": false },
+      { "id": "shinjuku", "nameKor": "신주쿠", "nameJpn": "新宿", "isBoundary": false },
+      { "id": "shinjuku_sanchome", "nameKor": "신주쿠삼초메", "nameJpn": "新宿三丁目", "isBoundary": false },
+      { "id": "akasaka_mitsuke", "nameKor": "아카사카미츠케", "nameJpn": "赤坂見附", "isBoundary": false },
+      { "id": "ginza", "nameKor": "긴자", "nameJpn": "銀座", "isBoundary": false },
+      { "id": "tokyo", "nameKor": "도쿄", "nameJpn": "東京", "isBoundary": false },
+      { "id": "otemachi", "nameKor": "오테마치", "nameJpn": "大手町", "isBoundary": false },
+      { "id": "ikebukuro", "nameKor": "이케부쿠로", "nameJpn": "池袋", "isBoundary": false }
+    ]
+  },
+  {
+    "lineId": "hibiya_line",
+    "lineName": "도쿄메트로 히비야선",
+    "type": "SUBWAY",
+    "isPassCovered": true,
+    "stations": [
+      { "id": "naka_meguro", "nameKor": "나카메구로", "nameJpn": "中目黒", "isBoundary": false },
+      { "id": "ebisu", "nameKor": "에비스", "nameJpn": "恵比寿", "isBoundary": false },
+      { "id": "roppongi", "nameKor": "롯폰기", "nameJpn": "六本木", "isBoundary": false },
+      { "id": "ginza", "nameKor": "긴자", "nameJpn": "銀座", "isBoundary": false },
+      { "id": "tsukiji", "nameKor": "츠키지", "nameJpn": "築地", "isBoundary": false },
+      { "id": "akihabara", "nameKor": "아키하바라", "nameJpn": "秋葉原", "isBoundary": false },
+      { "id": "ueno", "nameKor": "우에노", "nameJpn": "上野", "isBoundary": false },
+      { "id": "kita_senju", "nameKor": "키타센주", "nameJpn": "北千住", "isBoundary": true }
+    ]
+  },
+  {
+    "lineId": "chiyoda_line",
+    "lineName": "도쿄메트로 치요다선",
+    "type": "SUBWAY",
+    "isPassCovered": true,
+    "stations": [
+      { "id": "yoyogi_uehara", "nameKor": "요요기우에하라", "nameJpn": "代々木上原", "isBoundary": true },
+      { "id": "meiji_jingumae", "nameKor": "메이지진구마에(하라주쿠)", "nameJpn": "明治神宮前", "isBoundary": false },
+      { "id": "omotesando", "nameKor": "오모테산도", "nameJpn": "表参道", "isBoundary": false },
+      { "id": "kasumigaseki", "nameKor": "카스미가세키", "nameJpn": "霞ケ関", "isBoundary": false },
+      { "id": "hibiya", "nameKor": "히비야", "nameJpn": "日比谷", "isBoundary": false },
+      { "id": "otemachi", "nameKor": "오테마치", "nameJpn": "大手町", "isBoundary": false },
+      { "id": "kita_senju", "nameKor": "키타센주", "nameJpn": "北千住", "isBoundary": true }
+    ]
+  },
+  {
+    "lineId": "fukutoshin_line",
+    "lineName": "도쿄메트로 후쿠토신선",
+    "type": "SUBWAY",
+    "isPassCovered": true,
+    "stations": [
+      { "id": "ikebukuro", "nameKor": "이케부쿠로", "nameJpn": "池袋", "isBoundary": false },
+      { "id": "shinjuku_sanchome", "nameKor": "신주쿠삼초메", "nameJpn": "新宿三丁目", "isBoundary": false },
+      { "id": "meiji_jingumae", "nameKor": "메이지진구마에(하라주쿠)", "nameJpn": "明治神宮前", "isBoundary": false },
+      { "id": "shibuya", "nameKor": "시부야", "nameJpn": "渋谷", "isBoundary": false }
+    ]
+  },
+  {
+    "lineId": "oedo_line",
+    "lineName": "도영지하철 오에도선",
+    "type": "SUBWAY",
+    "isPassCovered": true,
+    "stations": [
+      { "id": "shinjuku", "nameKor": "신주쿠", "nameJpn": "新宿", "isBoundary": false },
+      { "id": "roppongi", "nameKor": "롯폰기", "nameJpn": "六本木", "isBoundary": false },
+      { "id": "azabu_juban", "nameKor": "아자부주반", "nameJpn": "麻布十番", "isBoundary": false },
+      { "id": "akabanebashi", "nameKor": "아카바네바시(도쿄타워)", "nameJpn": "赤羽橋", "isBoundary": false },
+      { "id": "tsukishima", "nameKor": "츠키시마", "nameJpn": "月島", "isBoundary": false }
+    ]
+  },
+  {
+    "lineId": "asakusa_line",
+    "lineName": "도영지하철 아사쿠사선",
+    "type": "SUBWAY",
+    "isPassCovered": true,
+    "stations": [
+      { "id": "nishi_magome", "nameKor": "니시마고메", "nameJpn": "西馬込", "isBoundary": false },
+      { "id": "sengakuji", "nameKor": "센가쿠지", "nameJpn": "泉岳寺", "isBoundary": true },
+      { "id": "shinbashi", "nameKor": "신바시", "nameJpn": "新橋", "isBoundary": false },
+      { "id": "nihonbashi", "nameKor": "니혼바시", "nameJpn": "日本橋", "isBoundary": false },
+      { "id": "asakusa", "nameKor": "아사쿠사", "nameJpn": "浅草", "isBoundary": false },
+      { "id": "oshiage", "nameKor": "오시아게(스카이트리)", "nameJpn": "押上", "isBoundary": true }
+    ]
+  },
+  {
+    "lineId": "yamanote_line",
+    "lineName": "JR 야마노테선",
+    "type": "JR",
+    "isPassCovered": false,
+    "stations": [
+      { "id": "tokyo", "nameKor": "도쿄", "nameJpn": "東京", "isBoundary": false },
+      { "id": "shinbashi", "nameKor": "신바시", "nameJpn": "新橋", "isBoundary": false },
+      { "id": "shinagawa", "nameKor": "시나가와", "nameJpn": "品川", "isBoundary": false },
+      { "id": "ebisu", "nameKor": "에비스", "nameJpn": "恵比寿", "isBoundary": false },
+      { "id": "shibuya", "nameKor": "시부야", "nameJpn": "渋谷", "isBoundary": false },
+      { "id": "harajuku", "nameKor": "하라주쿠", "nameJpn": "原宿", "isBoundary": false },
+      { "id": "shinjuku", "nameKor": "신주쿠", "nameJpn": "新宿", "isBoundary": false },
+      { "id": "shin_okubo", "nameKor": "신오쿠보(한인타운)", "nameJpn": "新大久保", "isBoundary": false },
+      { "id": "ikebukuro", "nameKor": "이케부쿠로", "nameJpn": "池袋", "isBoundary": false },
+      { "id": "nippori", "nameKor": "닛포리", "nameJpn": "日暮里", "isBoundary": false },
+      { "id": "ueno", "nameKor": "우에노", "nameJpn": "上野", "isBoundary": false },
+      { "id": "akihabara", "nameKor": "아키하바라", "nameJpn": "秋葉原", "isBoundary": false }
+    ]
+  },
+  {
+    "lineId": "odakyu_line",
+    "lineName": "오다큐 오다와라선 (직통 사철)",
+    "type": "PRIVATE",
+    "isPassCovered": false,
+    "stations": [
+      { "id": "shinjuku", "nameKor": "신주쿠", "nameJpn": "新宿", "isBoundary": false },
+      { "id": "yoyogi_uehara", "nameKor": "요요기우에하라", "nameJpn": "代々木上原", "isBoundary": true },
+      { "id": "machida", "nameKor": "마치다", "nameJpn": "町田", "isBoundary": false },
+      { "id": "gotemba", "nameKor": "고텐바", "nameJpn": "御殿場", "isBoundary": false },
+      { "id": "katase_enoshima", "nameKor": "카타세에노시마", "nameJpn": "片瀬江ノ島", "isBoundary": false },
+      { "id": "hakone_yumoto", "nameKor": "하코네유모토", "nameJpn": "箱根湯本", "isBoundary": false }
+    ]
+  },
+  {
+    "lineId": "tobu_nikko_line",
+    "lineName": "토부 이세사키/닛코선 (직통 사철)",
+    "type": "PRIVATE",
+    "isPassCovered": false,
+    "stations": [
+      { "id": "asakusa", "nameKor": "아사쿠사", "nameJpn": "浅草", "isBoundary": false },
+      { "id": "kita_senju", "nameKor": "키타센주", "nameJpn": "北千住", "isBoundary": true },
+      { "id": "kasukabe", "nameKor": "카스카베", "nameJpn": "春日部", "isBoundary": false },
+      { "id": "tobu_nikko", "nameKor": "토부 닛코", "nameJpn": "東武日光", "isBoundary": false },
+      { "id": "kinugawa_onsen", "nameKor": "키누가와 온천", "nameJpn": "鬼怒川温泉", "isBoundary": false }
+    ]
+  },
+  {
+    "lineId": "keikyu_line",
+    "lineName": "케이큐 본선/공항선 (직통 사철)",
+    "type": "PRIVATE",
+    "isPassCovered": false,
+    "stations": [
+      { "id": "sengakuji", "nameKor": "센가쿠지", "nameJpn": "泉岳寺", "isBoundary": true },
+      { "id": "shinagawa", "nameKor": "시나가와", "nameJpn": "品川", "isBoundary": false },
+      { "id": "haneda_airport", "nameKor": "하네다 공항", "nameJpn": "羽田空港", "isBoundary": false },
+      { "id": "yokohama", "nameKor": "요코하마", "nameJpn": "横浜", "isBoundary": false }
+    ]
+  },
+  {
+    "lineId": "keisei_line",
+    "lineName": "케이세이 본선/스카이라이너 (공항 사철)",
+    "type": "PRIVATE",
+    "isPassCovered": false,
+    "stations": [
+      { "id": "ueno", "nameKor": "우에노", "nameJpn": "上野", "isBoundary": false },
+      { "id": "nippori", "nameKor": "닛포리", "nameJpn": "日暮里", "isBoundary": false },
+      { "id": "narita_airport", "nameKor": "나리타 공항", "nameJpn": "成田空港", "isBoundary": false }
+    ]
+  },
+  {
+    "lineId": "yurikamome_line",
+    "lineName": "유리카모메 (오다이바 신교통)",
+    "type": "PRIVATE",
+    "isPassCovered": false,
+    "stations": [
+      { "id": "shinbashi", "nameKor": "신바시", "nameJpn": "新橋", "isBoundary": false },
+      { "id": "odaiba_kaihinkoen", "nameKor": "오다이바 해변공원", "nameJpn": "お台場海浜公園", "isBoundary": false },
+      { "id": "toyosu", "nameKor": "토요스", "nameJpn": "豊洲", "isBoundary": false }
+    ]
+  }
+]

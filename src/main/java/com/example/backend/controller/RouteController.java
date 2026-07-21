@@ -1,8 +1,6 @@
 package com.example.backend.controller;
 
 import com.example.backend.dto.GoogleDirectionsResponse;
-import com.example.backend.dto.RouteRequestDTO;
-import com.example.backend.dto.RouteResponseDTO;
 import com.example.backend.dto.SearchRequest;
 import com.example.backend.service.GoogleMapsService;
 import org.springframework.web.bind.annotation.*;

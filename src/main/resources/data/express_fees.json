@@ -1,0 +1,154 @@
+[
+  {
+    "lineId": "odakyu_romancecar_shinjuku",
+    "trainName": "오다큐 로망스카 (신주쿠 출발)",
+    "note": "신주쿠역 출발 하코네 / 에노시마 / 고텐바 방면 특급 지정석",
+    "fareMatrix": [
+      {
+        "departureStationId": "shinjuku",
+        "arrivalStationId": "hakone_yumoto",
+        "expressSurcharge": 1200
+      },
+      {
+        "departureStationId": "shinjuku",
+        "arrivalStationId": "katase_enoshima",
+        "expressSurcharge": 750
+      },
+      {
+        "departureStationId": "shinjuku",
+        "arrivalStationId": "gotemba",
+        "expressSurcharge": 1610
+      }
+    ]
+  },
+  {
+    "lineId": "odakyu_romancecar_metro_mse",
+    "trainName": "메트로 로망스카 MSE (치요다선 직통)",
+    "note": "도쿄메트로 치요다선(키타센주/오테마치/카스미가세키/오모테산도) 내 출발 직통 로망스카",
+    "fareMatrix": [
+      {
+        "departureStationId": "kita_senju",
+        "arrivalStationId": "hakone_yumoto",
+        "expressSurcharge": 1410
+      },
+      {
+        "departureStationId": "otemachi",
+        "arrivalStationId": "hakone_yumoto",
+        "expressSurcharge": 1410
+      },
+      {
+        "departureStationId": "kasumigaseki",
+        "arrivalStationId": "hakone_yumoto",
+        "expressSurcharge": 1410
+      },
+      {
+        "departureStationId": "omotesando",
+        "arrivalStationId": "hakone_yumoto",
+        "expressSurcharge": 1410
+      },
+      {
+        "departureStationId": "kita_senju",
+        "arrivalStationId": "katase_enoshima",
+        "expressSurcharge": 960
+      },
+      {
+        "departureStationId": "otemachi",
+        "arrivalStationId": "katase_enoshima",
+        "expressSurcharge": 960
+      },
+      {
+        "departureStationId": "kasumigaseki",
+        "arrivalStationId": "katase_enoshima",
+        "expressSurcharge": 960
+      },
+      {
+        "departureStationId": "omotesando",
+        "arrivalStationId": "katase_enoshima",
+        "expressSurcharge": 960
+      }
+    ]
+  },
+  {
+    "lineId": "tobu_spacia_asakusa",
+    "trainName": "이세사키선 / 토부 특급 (아사쿠사 출발)",
+    "note": "아사쿠사역 출발 닛코 / 키누가와 온천 방면 특급 지정석",
+    "fareMatrix": [
+      {
+        "departureStationId": "asakusa",
+        "arrivalStationId": "tobu_nikko",
+        "expressSurcharge": 1650
+      },
+      {
+        "departureStationId": "asakusa",
+        "arrivalStationId": "kinugawa_onsen",
+        "expressSurcharge": 1650
+      }
+    ]
+  },
+  {
+    "lineId": "jr_tobu_direct_shinjuku",
+    "trainName": "JR 신주쿠 직통 특급 (닛코 / 키누가와호)",
+    "note": "JR 신주쿠역 출발 닛코 / 키누가와 방면 JR-토부 직통 특급",
+    "fareMatrix": [
+      {
+        "departureStationId": "shinjuku",
+        "arrivalStationId": "tobu_nikko",
+        "expressSurcharge": 2100
+      },
+      {
+        "departureStationId": "shinjuku",
+        "arrivalStationId": "kinugawa_onsen",
+        "expressSurcharge": 2100
+      }
+    ]
+  },
+  {
+    "lineId": "keisei_skyliner",
+    "trainName": "케이세이 스카이라이너 (Keisei Skyliner)",
+    "note": "우에노/닛포리 ↔ 나리타 공항 최속 초고속 특급 지정석",
+    "fareMatrix": [
+      {
+        "departureStationId": "ueno",
+        "arrivalStationId": "narita_airport",
+        "expressSurcharge": 1300
+      },
+      {
+        "departureStationId": "nippori",
+        "arrivalStationId": "narita_airport",
+        "expressSurcharge": 1300
+      }
+    ]
+  },
+  {
+    "lineId": "jr_nex",
+    "trainName": "JR 나리타 익스프레스 (N'EX)",
+    "note": "나리타 공항 방면 JR 특급 지정석권",
+    "fareMatrix": [
+      {
+        "departureStationId": "tokyo",
+        "arrivalStationId": "narita_airport",
+        "expressSurcharge": 1730
+      },
+      {
+        "departureStationId": "shinjuku",
+        "arrivalStationId": "narita_airport",
+        "expressSurcharge": 1730
+      },
+      {
+        "departureStationId": "shibuya",
+        "arrivalStationId": "narita_airport",
+        "expressSurcharge": 1730
+      },
+      {
+        "departureStationId": "shinagawa",
+        "arrivalStationId": "narita_airport",
+        "expressSurcharge": 1730
+      },
+      {
+        "departureStationId": "yokohama",
+        "arrivalStationId": "narita_airport",
+        "expressSurcharge": 2390
+      }
+    ]
+  }
+]
