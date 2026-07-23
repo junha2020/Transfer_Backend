@@ -34,6 +34,7 @@ public class RouteDataDataLoader {
             System.out.println("도쿄 철도 & 특급 데이터 로드 완료.");
         } catch (Exception e) {
             System.out.println("데이터 로드 중 에러 발생: " + e.getMessage());
+
         }
     }
 }
