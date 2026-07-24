@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -13,20 +15,24 @@ public class RouteCalculateResponse {
 
     private String origin;
     private String destination;
-    private OptionInfo regularOption; // 일반 전철 및 지하철 이용 시
-    private OptionInfo expressOption; // 특급열차 이용 시
-    private String note; // 안내문구
+    private String paymentType;
+    private List<RouteOption> routes;
+    private String note;
 
     @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class OptionInfo {
-        private String trainName; // 열차 이름
-        private int baseFare; //패스 적용 실제 기본 금액
-        private int expressSurcharge; // 특급권 금액
-        private int totalFare; // 총 금액
-        private int savedAmount; // 지하철 패스로 절약한 금액
-        private boolean isPassApplied; // 패스 혜택 적용 여부
+    public static class RouteOption {
+        private int routeNumber; // 몇 번째 루트인지
+        private String trainName; // 어떤 노선인지
+        private List<String> badges; // 루트에 해당하는 뱃지(최단거리, 최단시간, 최소금액)
+        private int durationMinutes; // 소요시간
+        private int transferCount; // 환승 횟수
+        private int baseFare; // 기본 요금
+        private int expressSurcharge; // 특급권 요금
+        private int totalFare; // 총 결제 금액
+        private int savedAmount; // 절약 금액
+        private boolean isPassApplied; // 패스 적용 여부
     }
 }

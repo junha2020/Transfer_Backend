@@ -12,11 +12,11 @@ public class TokyoMetroFareCalculator implements FareCalculator {
     }
 
     @Override
-    public int calculateFare(int hopCount, boolean isIC) {
-        if (hopCount <= 2) return isIC ? 178 : 180;
-        else if (hopCount <= 4) return isIC ? 209 : 210;
-        else if (hopCount <= 7) return isIC ? 252 : 260;
-        else if (hopCount <= 10) return isIC ? 293 : 300;
+    public int calculateFare(double distanceKm, boolean isIC) {
+        if (distanceKm <= 6.0) return isIC ? 178 : 180;
+        else if (distanceKm <= 11.0) return isIC ? 209 : 210;
+        else if (distanceKm <= 19.0) return isIC ? 252 : 260;
+        else if (distanceKm <= 27.0) return isIC ? 293 : 300;
         else return isIC ? 324 : 330;
     }
 }

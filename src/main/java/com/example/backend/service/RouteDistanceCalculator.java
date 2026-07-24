@@ -8,24 +8,25 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class HopCalculator {
+public class RouteDistanceCalculator {
 
     private final RouteDataDataLoader dataLoader;
 
-    public HopCalculator(RouteDataDataLoader dataLoader) {
+    public RouteDistanceCalculator(RouteDataDataLoader dataLoader) {
         this.dataLoader = dataLoader;
     }
 
     @Getter
     @AllArgsConstructor
-    public static class HopSearchResult {
-        private int hopCount;
+    public static class RouteDistanceResult {
+        private double distanceKm; // 실제 영업거리
+        private int travelTimeMinutes; // 실제 소요시간
         private String companyType;
         private boolean isPassCovered;
         private String lineName;
     }
 
-    public HopSearchResult findRouteHopInfo(String origin, String dest) {
+    public RouteDistanceResult findRouteDistanceInfo(String origin, String dest) {
         for (SubwayLineData line : dataLoader.getSubwayLines()) {
             int originIdx = -1;
             int destIdx = -1;
@@ -36,12 +37,16 @@ public class HopCalculator {
                 if (stations.get(i).getId().equalsIgnoreCase(dest)) destIdx = i;
             }
 
+            // TODO: 일단 임시. 나중에 실제 역간 거리 넣어서 확인예정
             if (originIdx != -1 && destIdx != -1) {
                 int hops = Math.abs(destIdx - originIdx);
-                return  new HopSearchResult(hops, line.getType(), line.isPassCovered(), line.getLineName());
+                double distanceKm = hops * 1.8;
+                int travelTime = (int)(hops * 3.0);
+
+                return new RouteDistanceResult(distanceKm, travelTime, line.getType(), line.isPassCovered(), line.getLineName());
             }
         }
 
-        return new HopSearchResult(3, "SUBWAY", true, "일반 전철");
+        return new RouteDistanceResult(5.0, 15, "SUBWAY", true, "도쿄메트로 마루노우치선"); // 에러 방지용
     }
 }
