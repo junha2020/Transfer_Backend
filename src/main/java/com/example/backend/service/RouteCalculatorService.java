@@ -24,12 +24,14 @@ public class RouteCalculatorService {
         String dest = request.getDestination();
         boolean isIC = "IC".equalsIgnoreCase(request.getPaymentType());
 
+        boolean hasPass = request.getPassId() != null && !request.getPassId().equalsIgnoreCase("none");
+
         // 한번에 갈 수 있는 경우
-        List<RouteOption> routes = new ArrayList<>(directRouteBuilder.buildDirectRoutes(origin, dest, isIC));
+        List<RouteOption> routes = new ArrayList<>(directRouteBuilder.buildDirectRoutes(origin, dest, isIC, hasPass));
 
         // 환승해야 하는 경우
         if (routes.size() < 2) {
-            routes.addAll(transferRouteBuilder.buildTransferRoutes(origin, dest, isIC, routes.size() + 1));
+            routes.addAll(transferRouteBuilder.buildTransferRoutes(origin, dest, isIC, hasPass, routes.size() + 1));
         }
 
         // 안내 문구

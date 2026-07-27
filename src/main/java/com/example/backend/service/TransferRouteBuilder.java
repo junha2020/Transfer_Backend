@@ -20,7 +20,7 @@ public class TransferRouteBuilder {
         this.fareCalculatorFactory = fareCalculatorFactory;
     }
 
-    public List<RouteOption> buildTransferRoutes(String origin, String dest, boolean isIC, int startRouteNumber) {
+    public List<RouteOption> buildTransferRoutes(String origin, String dest, boolean isIC, boolean hasPass, int startRouteNumber) {
         List<RouteOption> transferRoutes = new ArrayList<>();
         List<SubwayLineData> lines = dataLoader.getSubwayLines();
 
@@ -39,20 +39,33 @@ public class TransferRouteBuilder {
                     if (transferOnLine2Idx != -1) {
                         int dist1 = Math.abs(findStationIndex(line1, transferStation.getId()) - originIdx);
                         int dist2 = Math.abs(destIdx - transferOnLine2Idx);
+                        if (dist1 == 0 || dist2 == 0) continue; // 자기 자신으로 환승하는 것 제외
 
                         FareCalculator calc1 = fareCalculatorFactory.getCalculator(line1.getType());
                         FareCalculator calc2 = fareCalculatorFactory.getCalculator(line2.getType());
-                        int fare1 = line1.isPassCovered() ? 0 : calc1.calculateFare(dist1 * 1.8, isIC);
-                        int fare2 = line2.isPassCovered() ? 0 : calc2.calculateFare(dist2 * 1.8, isIC);
-                        int totalFare = fare1 + fare2;
+
+                        // 패스 적용 안된 금액
+                        int rawFare1 =  calc1.calculateFare(dist1 * 1.8, isIC);
+                        int rawFare2 = calc2.calculateFare(dist2 * 1.8, isIC);
+                        int originalTotalFare = rawFare1 + rawFare2;
+
+                        // 패스 보유 여부 및 절약액 계산
+                        boolean line1Covered = hasPass && line1.isPassCovered();
+                        boolean line2Covered = hasPass && line2.isPassCovered();
+                        int userPayFare1 = line1Covered ? 0 : rawFare1;
+                        int userPayFare2 = line2Covered ? 0 : rawFare2;
+                        int finalTotalFare = userPayFare1 + userPayFare2;
+
+                        // 패스 절약액 계산
+                        int savedAmount = originalTotalFare - finalTotalFare;
+                        boolean isPassApplied= line1Covered || line2Covered;
 
                         int duration1 = (int)(dist1 * 3.5);
                         int duration2 = (int)(dist2 * 3.5);
                         int totalDuration = duration1 + duration2 + 5;
 
-                        boolean isPassApplied = line1.isPassCovered() && line2.isPassCovered();
                         List<String> badges = new ArrayList<>(List.of("FAST"));
-                        if (isPassApplied) badges.add("CHEAP");
+                        if (isPassApplied && finalTotalFare == 0) badges.add("CHEAP");
 
                         transferRoutes.add(RouteOption.builder()
                                 .routeNumber(startRouteNumber++)
@@ -60,9 +73,9 @@ public class TransferRouteBuilder {
                                 .badges(badges)
                                 .durationMinutes(totalDuration)
                                 .transferCount(1)
-                                .baseFare(totalFare)
+                                .baseFare(finalTotalFare)
                                 .expressSurcharge(0)
-                                .totalFare(totalFare)
+                                .totalFare(finalTotalFare)
                                 .savedAmount(isPassApplied ? 440 : 0)
                                 .isPassApplied(isPassApplied)
                                 .build());
@@ -76,10 +89,17 @@ public class TransferRouteBuilder {
         return transferRoutes;
     }
 
-    private int findStationIndex(SubwayLineData line, String stationId) {
+    private int findStationIndex(SubwayLineData line, String query) {
+        if (query == null || query.trim().isEmpty()) return -1;
+        String q = query.trim().toLowerCase();
         List<SubwayLineData.StationData> stations = line.getStations();
-        for (int i = 0; i < stations.size(); i++) {
-            if (stations.get(i).getId().equalsIgnoreCase(stationId)) return i;
+        for (int i = 0; i< stations.size(); i++) {
+            SubwayLineData.StationData st = stations.get(i);
+            if (st.getId().equalsIgnoreCase(q) ||
+                    (st.getNameKor() != null && st.getNameKor().equalsIgnoreCase(q)) ||
+                    (st.getNameJpn() != null && st.getNameJpn().equalsIgnoreCase(q))) {
+                return i;
+            }
         }
         return -1;
     }

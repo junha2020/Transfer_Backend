@@ -21,19 +21,13 @@ public class DirectRouteBuilder {
         this.fareCalculatorFactory = fareCalculatorFactory;
     }
 
-    public List<RouteOption> buildDirectRoutes(String origin, String dest, boolean isIC) {
+    public List<RouteOption> buildDirectRoutes(String origin, String dest, boolean isIC, boolean hasPass) {
         List<RouteOption> routes = new ArrayList<>();
         int routeCounter = 1;
 
         for (SubwayLineData line : dataLoader.getSubwayLines()) {
-            int originIdx = -1;
-            int destIdx = -1;
-            List<SubwayLineData.StationData> stations = line.getStations();
-
-            for (int i = 0; i < stations.size(); i++) {
-                if (stations.get(i).getId().equalsIgnoreCase(origin)) originIdx = i;
-                if (stations.get(i).getId().equalsIgnoreCase(dest)) destIdx = i;
-            }
+            int originIdx = findStationIndex(line, origin);
+            int destIdx = findStationIndex(line, dest);
 
             if (originIdx != -1 && destIdx != -1) {
                 int hops = Math.abs(destIdx - originIdx);
@@ -42,7 +36,7 @@ public class DirectRouteBuilder {
                 FareCalculator calc = fareCalculatorFactory.getCalculator(line.getType());
                 int calculatedFare = calc.calculateFare(distanceKm, isIC);
 
-                boolean isPassCovered = line.isPassCovered();
+                boolean isPassCovered = hasPass && line.isPassCovered();
                 int baseFare = isPassCovered ? 0 : calculatedFare;
                 int savedFare = isPassCovered ? calculatedFare : 0;
 
@@ -75,5 +69,17 @@ public class DirectRouteBuilder {
                 });
 
         return routes;
+    }
+
+    private int findStationIndex(SubwayLineData line, String query) {
+        if (query == null || query.trim().isEmpty()) return -1;
+        String q = query.trim().toLowerCase();
+        for (int i = 0; i < line.getStations().size(); i++) {
+            var st = line.getStations().get(i);
+            if (st.getId().equalsIgnoreCase(q) ||
+                    (st.getNameKor() != null && st.getNameKor().equalsIgnoreCase(q)) ||
+                    (st.getNameJpn() != null && st.getNameJpn().equalsIgnoreCase(q))) return i;
+        }
+        return -1;
     }
 }
