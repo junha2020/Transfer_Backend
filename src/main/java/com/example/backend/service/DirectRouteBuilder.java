@@ -1,26 +1,27 @@
 package com.example.backend.service;
 
-import com.example.backend.dto.SubwayLineData;
-import org.springframework.stereotype.Component;
 import com.example.backend.dto.RouteCalculateResponse.RouteOption;
+import com.example.backend.dto.SubwayLineData;
+import com.example.backend.service.strategy.FareCalculator;
+import com.example.backend.service.strategy.FareCalculatorFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 @Component
-public class MultiRouteBuilder {
+public class DirectRouteBuilder {
 
     private final RouteDataDataLoader dataLoader;
     private final FareCalculatorFactory fareCalculatorFactory;
 
-    public MultiRouteBuilder(RouteDataDataLoader dataLoader, FareCalculatorFactory fareCalculatorFactory) {
+    public DirectRouteBuilder(RouteDataDataLoader dataLoader, FareCalculatorFactory fareCalculatorFactory) {
         this.dataLoader = dataLoader;
         this.fareCalculatorFactory = fareCalculatorFactory;
     }
 
-    public List<RouteOption> buildMultiRoutes(String origin, String dest, String paymentType) {
-        boolean isIC = "IC".equalsIgnoreCase(paymentType);
+    public List<RouteOption> buildDirectRoutes(String origin, String dest, boolean isIC) {
         List<RouteOption> routes = new ArrayList<>();
         int routeCounter = 1;
 
@@ -34,19 +35,17 @@ public class MultiRouteBuilder {
                 if (stations.get(i).getId().equalsIgnoreCase(dest)) destIdx = i;
             }
 
-            // 출도착역 동일 노선 상에 존재하는 경우 -> 동적 루트 생성
             if (originIdx != -1 && destIdx != -1) {
                 int hops = Math.abs(destIdx - originIdx);
+                double distanceKm = hops * 1.8;
 
-                // 해당 노선 회사 타입에 적합한 전략 선택
                 FareCalculator calc = fareCalculatorFactory.getCalculator(line.getType());
-                int calculateFare = calc.calculateFare(hops, isIC);
+                int calculatedFare = calc.calculateFare(distanceKm, isIC);
 
                 boolean isPassCovered = line.isPassCovered();
-                int baseFare = isPassCovered ? 0 : calculateFare;
-                int savedFare = isPassCovered ? calculateFare : 0;
+                int baseFare = isPassCovered ? 0 : calculatedFare;
+                int savedFare = isPassCovered ? calculatedFare : 0;
 
-                // 소요시간 수식
                 double speedFactor = "JR".equalsIgnoreCase(line.getType()) ? 2.5 : (isPassCovered ? 3.5 : 4.0);
                 int duration = Math.max(10, (int)(hops * speedFactor));
 
@@ -74,21 +73,6 @@ public class MultiRouteBuilder {
                 .ifPresent(r -> {
                     if (!r.getBadges().contains("FAST")) r.getBadges().add("FAST");
                 });
-
-        if (routes.isEmpty()) {
-            routes.add(RouteOption.builder()
-                    .routeNumber(1)
-                    .trainName("도쿄메트로 마루노우치선")
-                    .badges(List.of("CHEAP", "EASY", "FAST"))
-                    .durationMinutes(20)
-                    .transferCount(0)
-                    .baseFare(0)
-                    .expressSurcharge(0)
-                    .totalFare(0)
-                    .savedAmount(209)
-                    .isPassApplied(true)
-                    .build());
-        }
 
         return routes;
     }

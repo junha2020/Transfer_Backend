@@ -1,4 +1,4 @@
-package com.example.backend.service;
+package com.example.backend.service.strategy;
 
 import org.springframework.stereotype.Component;
 
