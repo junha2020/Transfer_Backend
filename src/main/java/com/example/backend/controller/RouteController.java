@@ -18,7 +18,7 @@ public class RouteController {
     private final DirectRouteBuilder directRouteBuilder;
     private final TransferRouteBuilder multiTransferRouteBuilder;
 
-    public RouteCalculatorService(DirectRouteBuilder directRouteBuilder, TransferRouteBuilder multiTransferRouteBuilder) {
+    public RouteController(DirectRouteBuilder directRouteBuilder, TransferRouteBuilder multiTransferRouteBuilder) {
         this.directRouteBuilder = directRouteBuilder;
         this.multiTransferRouteBuilder = multiTransferRouteBuilder;
     }
