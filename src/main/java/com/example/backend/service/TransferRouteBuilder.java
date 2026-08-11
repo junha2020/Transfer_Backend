@@ -6,8 +6,7 @@ import com.example.backend.service.strategy.FareCalculator;
 import com.example.backend.service.strategy.FareCalculatorFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class TransferRouteBuilder {
@@ -20,87 +19,150 @@ public class TransferRouteBuilder {
         this.fareCalculatorFactory = fareCalculatorFactory;
     }
 
-    public List<RouteOption> buildTransferRoutes(String origin, String dest, boolean isIC, boolean hasPass, int startRouteNumber) {
-        List<RouteOption> transferRoutes = new ArrayList<>();
+    private static class PathNode {
+        SubwayLineData currentLine;
+        SubwayLineData.StationData currentStation;
+        int transfers;
+        double totalDistance;
+        List<SubwayLineData.StationData> pathStations;
+        List<String> lineSequence;
+        List<String> transferStationNames;
+
+        public PathNode(SubwayLineData currentLine, SubwayLineData.StationData currentStation, int transfers, double totalDistance, List<SubwayLineData.StationData> pathStations, List<String> lineSequence, List<String> transferStationNames) {
+            this.currentLine = currentLine;
+            this.currentStation = currentStation;
+            this.transfers = transfers;
+            this.totalDistance = totalDistance;
+            this.pathStations = new ArrayList<>(pathStations);
+            this.lineSequence = new ArrayList<>(lineSequence);
+            this.transferStationNames = new ArrayList<>(transferStationNames);
+        }
+    }
+
+    public List<RouteOption> buildTransferRoutes(String origin, String dest, boolean isIC, boolean hasPass, int maxTransfers, int startRouteNumber) {
+        List<RouteOption> results = new ArrayList<>();
         List<SubwayLineData> lines = dataLoader.getSubwayLines();
 
-        for (SubwayLineData line1 : lines) {
-            int originIdx = findStationIndex(line1, origin);
-            if (originIdx == -1) continue;
+        Queue<PathNode> queue = new LinkedList<>();
 
-            for (SubwayLineData line2 : lines) {
-                if (line1.getLineId().equals(line2.getLineId())) continue;
-                int destIdx = findStationIndex(line2, dest);
-                if (destIdx == -1) continue;
+        for (SubwayLineData line : lines) {
+            SubwayLineData.StationData originSt = findStation(line, origin);
+            if (originSt != null) {
+                queue.add(new PathNode(
+                        line,
+                        originSt,
+                        0,
+                        0.0,
+                        List.of(originSt),
+                        List.of(line.getLineName()),
+                        new ArrayList<>()
+                ));
+            }
+        }
 
-                for (SubwayLineData.StationData transferStation : line1.getStations()) {
-                    int transferOnLine2Idx = findStationIndex(line2, transferStation.getId());
+        Set<String> visited = new HashSet<>();
 
-                    if (transferOnLine2Idx != -1) {
-                        int dist1 = Math.abs(findStationIndex(line1, transferStation.getId()) - originIdx);
-                        int dist2 = Math.abs(destIdx - transferOnLine2Idx);
-                        if (dist1 == 0 || dist2 == 0) continue; // 자기 자신으로 환승하는 것 제외
+        while (!queue.isEmpty() && results.size() < 5) {
+            PathNode current = queue.poll();
 
-                        FareCalculator calc1 = fareCalculatorFactory.getCalculator(line1.getType());
-                        FareCalculator calc2 = fareCalculatorFactory.getCalculator(line2.getType());
+            if (isSameStation(current.currentStation, dest)) {
+                RouteOption option = createRouteOption(current, isIC, hasPass, startRouteNumber++);
+                results.add(option);
+                continue;
+            }
 
-                        // 패스 적용 안된 금액
-                        int rawFare1 =  calc1.calculateFare(dist1 * 1.8, isIC);
-                        int rawFare2 = calc2.calculateFare(dist2 * 1.8, isIC);
-                        int originalTotalFare = rawFare1 + rawFare2;
+            if (current.transfers >= maxTransfers) continue;
 
-                        // 패스 보유 여부 및 절약액 계산
-                        boolean line1Covered = hasPass && line1.isPassCovered();
-                        boolean line2Covered = hasPass && line2.isPassCovered();
-                        int userPayFare1 = line1Covered ? 0 : rawFare1;
-                        int userPayFare2 = line2Covered ? 0 : rawFare2;
-                        int finalTotalFare = userPayFare1 + userPayFare2;
+            String stateKey = current.currentLine.getLineId() + ":" + current.currentStation.getId();
+            if (visited.contains(stateKey)) continue;
+            visited.add(stateKey);
 
-                        // 패스 절약액 계산
-                        int savedAmount = originalTotalFare - finalTotalFare;
-                        boolean isPassApplied= line1Covered || line2Covered;
+            List<SubwayLineData.StationData> lineStations = current.currentLine.getStations();
+            int stIdx = lineStations.indexOf(current.currentStation);
 
-                        int duration1 = (int)(dist1 * 3.5);
-                        int duration2 = (int)(dist2 * 3.5);
-                        int totalDuration = duration1 + duration2 + 5;
+            for (int nextIdx : new int[]{stIdx - 1, stIdx + 1}) {
+                if (nextIdx >= 0 && nextIdx < lineStations.size()) {
+                    SubwayLineData.StationData nextSt = lineStations.get(nextIdx);
+                    List<SubwayLineData.StationData> newPath = new ArrayList<>(current.pathStations);
+                    newPath.add(nextSt);
 
-                        List<String> badges = new ArrayList<>(List.of("FAST"));
-                        if (isPassApplied && finalTotalFare == 0) badges.add("CHEAP");
+                    queue.add(new PathNode(
+                            current.currentLine,
+                            nextSt,
+                            current.transfers,
+                            current.totalDistance + 1.8,
+                            newPath,
+                            current.lineSequence,
+                            current.transferStationNames
+                    ));
+                }
+            }
 
-                        transferRoutes.add(RouteOption.builder()
-                                .routeNumber(startRouteNumber++)
-                                .trainName(line1.getLineName() + " ➔ " + line2.getLineName() + " (" + transferStation.getNameKor() + "환승)")
-                                .badges(badges)
-                                .durationMinutes(totalDuration)
-                                .transferCount(1)
-                                .baseFare(finalTotalFare)
-                                .expressSurcharge(0)
-                                .totalFare(finalTotalFare)
-                                .savedAmount(isPassApplied ? 440 : 0)
-                                .isPassApplied(isPassApplied)
-                                .build());
+            for (SubwayLineData nextLine : lines) {
+                if (nextLine.getLineId().equals(current.currentLine.getLineId())) continue;
+                SubwayLineData.StationData transferSt = findStation(nextLine, current.currentStation.getId());
 
-                        if (transferRoutes.size() >= 3) break;
-                    }
+                if (transferSt != null) {
+                     List<String> newLines = new ArrayList<>(current.lineSequence);
+                     newLines.add(nextLine.getLineName());
+                     List<String> newTransfers = new ArrayList<>(current.transferStationNames);
+                     newTransfers.add(current.currentStation.getNameKor());
+
+                     queue.add(new PathNode(
+                             nextLine,
+                             transferSt,
+                             current.transfers + 1,
+                             current.totalDistance,
+                             current.pathStations,
+                             newLines,
+                             newTransfers
+                     ));
                 }
             }
         }
 
-        return transferRoutes;
+        return results;
     }
 
-    private int findStationIndex(SubwayLineData line, String query) {
-        if (query == null || query.trim().isEmpty()) return -1;
-        String q = query.trim().toLowerCase();
-        List<SubwayLineData.StationData> stations = line.getStations();
-        for (int i = 0; i< stations.size(); i++) {
-            SubwayLineData.StationData st = stations.get(i);
-            if (st.getId().equalsIgnoreCase(q) ||
-                    (st.getNameKor() != null && st.getNameKor().equalsIgnoreCase(q)) ||
-                    (st.getNameJpn() != null && st.getNameJpn().equalsIgnoreCase(q))) {
-                return i;
+    private RouteOption createRouteOption(PathNode node, boolean isIC, boolean hasPass, int routeNum) {
+        StringBuilder nameBuilder = new StringBuilder();
+        for (int i = 0; i < node.lineSequence.size(); i++) {
+            nameBuilder.append(node.lineSequence.get(i));
+            if (i < node.transferStationNames.size()) {
+                nameBuilder.append(" ➔ (").append(node.transferStationNames.get(i)).append(" 환승) ");
             }
         }
-        return -1;
+
+        FareCalculator calc = fareCalculatorFactory.getCalculator(node.currentLine.getType());
+        int originalFare = calc.calculateFare(node.totalDistance, isIC);
+        int finalFare = hasPass ? 0 : originalFare;
+        int saved = originalFare - finalFare;
+
+        return RouteOption.builder()
+                .routeNumber(routeNum)
+                .trainName(nameBuilder.toString())
+                .badges(List.of("FAST"))
+                .durationMinutes((int)(node.totalDistance * 2.0) + (node.transfers * 5))
+                .transferCount(node.transfers)
+                .baseFare(finalFare)
+                .expressSurcharge(0)
+                .totalFare(finalFare)
+                .savedAmount(saved)
+                .isPassApplied(hasPass)
+                .intermediateStations(node.pathStations)
+                .build();
+    }
+
+    private SubwayLineData.StationData findStation(SubwayLineData line, String name) {
+        for (SubwayLineData.StationData st : line.getStations()) {
+            if (st.getId().equalsIgnoreCase(name) || (st.getNameKor() != null && st.getNameKor().equalsIgnoreCase(name))) {
+                return st;
+            }
+        }
+        return null;
+    }
+
+    private boolean isSameStation(SubwayLineData.StationData st, String name) {
+        return st.getId().equalsIgnoreCase(name) || (st.getNameKor() != null & st.getNameKor().equalsIgnoreCase(name));
     }
 }
