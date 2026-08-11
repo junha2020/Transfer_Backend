@@ -59,6 +59,6 @@ public class RouteControllerTest {
                 .content(jsonRequest))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.routes[0].passApplied").value(false));
+                .andExpect(jsonPath("$.routes[1].passApplied").value(false));
     }
 }
