@@ -31,7 +31,7 @@ public class RouteCalculatorService {
 
         // 환승해야 하는 경우
         if (routes.size() < 2) {
-            routes.addAll(transferRouteBuilder.buildTransferRoutes(origin, dest, isIC, hasPass, routes.size() + 1));
+            routes.addAll(transferRouteBuilder.buildTransferRoutes(origin, dest, isIC, hasPass, 3, routes.size() + 1));
         }
 
         // 안내 문구

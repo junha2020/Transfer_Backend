@@ -34,5 +34,6 @@ public class RouteCalculateResponse {
         private int totalFare; // 총 결제 금액
         private int savedAmount; // 절약 금액
         private boolean isPassApplied; // 패스 적용 여부
+        private List<SubwayLineData.StationData> intermediateStations;
     }
 }
